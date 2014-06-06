@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Spec: Print Events</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="{{=app.locals.path }}dist/js/plugins.min.js"></script>
+    <script src="{{=app.locals.path }}dist/js/manager/printtoday.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" media="screen,print">
+    <link href="{{=app.locals.path }}dist/css/manager.min.css" rel="stylesheet">
+    <link href="{{=app.locals.path }}dist/css/plugins.min.css" rel="stylesheet">
+    <style type="text/css">
+      .container {
+        width: auto;
+        max-width: 680px;
+      }
+      .container .credit {
+        margin: 20px 0;
+      }
+
+      @media print
+      {    
+          .no-print, .no-print *
+          {
+              display: none !important;
+          }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrap">
+      <div class="container">
+      <div class="well form-inline no-print">
+      <a class="btn btn-info btn-large pull-right" href="../">Back to Spec</a>
+        <button class="btn btn-large btn-primary pull-right no-print" type="button" id="printButton"><i class="icon-white icon-print"></i> Print this page</button>
+        Choose a date:<br>
+        <div class="input-append date" id="d" data-date="00-00-0000" data-date-format="mm-dd-yyyy">
+          <input class="input-small" size="16" type="text">
+          <span class="add-on"><i class="icon-th"></i></span>
+        </div>
+        <button class="btn btn-primary" id="send" type="button">Bring</button>
+      </div>
+        <p class="lead">
+        Events of {{=dateString }}:
+        </p>
+        {{ events.forEach(function(event) { }}
+        <div class="media">
+          <div class="media-body">
+          <span class="media-heading pull-right" style="font-size:18px">
+          {{= formatAMPM(event.start) }} - {{= formatAMPM(event.end) }}
+          {{ if(event.duration == false) { }}
+           (setup and breakdown)
+            {{ } else { }}
+            (duration)
+            {{ } }}
+          </span>
+            <h4 class="media-heading">{{= event.title }}</h4>
+            
+            {{= event.desc }}
+            <span class="pull-right"><h4>
+            {{ if(Utility.fullShiftNumber(event) < event.staffNeeded) { }}
+            {{= event.staffNeeded }} staff needed, has {{= Utility.fullShiftNumber(event) }}
+            {{ } else { }}
+            {{= event.staffNeeded }} staff assigned
+            {{ } }}
+            </h4></span>
+            <h5>Event itself starts at {{= formatAMPM(event.eventStart) }} - {{= formatAMPM(event.eventEnd) }}</h5>
+            
+            {{ if(event.inventory.length > 0) { }}
+              <ul class="inline">
+                <li>
+                  <strong>Inventory: </strong>
+                </li>
+                  {{ event.inventory.forEach(function(item) { }}
+                    <li>
+                      {{= Utility.inventoryName(item.item) }}, 
+                    </li>
+                  {{ }) }}
+                </li>
+              </ul>
+            {{ } }}
+
+         <table class="table table-striped table-bordered">
+              <tbody>
+               {{ event.shifts.forEach(function(shift) { }}
+                 {{ if(shift.staff != '') { }}
+                    <tr>
+                      <td>
+                        {{=cache.get('storeStaff').filter(function(staff) {return staff.username == shift.staff;})[0].name }} 
+                        ({{= shift.staff }})
+                      </td>
+                      <td>{{= formatAMPM(shift.start) }}</td>
+                      <td>{{= formatAMPM(shift.end) }}</td>
+                    </tr>
+                  {{ } }} 
+                {{ }) }}
+              </tbody>
+            </table>
+                      </div>
+        </div>
+         {{ }) }}
+      </div>
+      <div id="push"></div>
+      </div>
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Wesleyan University Instructional Media Services - Special Events Calendar (Spec).</p>
+      </div>
+    </div>
+  </body>
+</html>

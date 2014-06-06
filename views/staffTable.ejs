@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Spec: Staff Table</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="http://underscorejs.org/underscore-min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="{{=app.locals.path }}dist/js/plugins.min.js"></script>
+    <script src="{{=app.locals.path }}dist/js/manager/utility.min.js"></script>
+    <script src="{{=app.locals.path }}dist/js/manager/staffTable.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" media="screen,print">
+    <link href="{{=app.locals.path }}dist/css/plugins.min.css" rel="stylesheet">
+    <link href="{{=app.locals.path }}dist/css/manager.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="wrap">
+      <div class="container">
+        <div class="page-header"><span class="pull-right"><a class="btn btn-info btn-large" href="../">Back to Spec</a></span>
+          <h2>Spec: Staff Table</h2>
+        </div>
+        <p class="lead">Choose a timespan that you want to see all staff, with the total number of events and hours they worked.</p>
+        <div class="form-inline">
+        <div class="input-append date" id="d1" data-date="00-00-0000" data-date-format="mm-dd-yyyy">
+          <input class="input-small" size="16" type="text">
+          <span class="add-on"><i class="icon-th"></i></span>
+        </div>
+        <div class="input-append date" id="d2" data-date="00-00-0000" data-date-format="mm-dd-yyyy">
+          <input class="input-small" size="16" type="text">
+          <span class="add-on"><i class="icon-th"></i></span>
+        </div>
+        <button class="btn btn-primary" id="send" type="button">See the list</button>
+        </div>
+        <hr>
+        <!-- this is where all the stuff is loaded after an ajax request-->
+        <div id="content">
+        </div>
+        <p></p>
+      </div>
+      <div id="push"></div>
+    </div>
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Wesleyan University Instructional Media Services - Special Events Calendar (Spec).</p>
+      </div>
+    </div>
+  </body>
+    <script type="text/template" class="template">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Staff</th>
+            <th>Number of events</th>
+            <th>Number of hours</th>
+          </tr>
+        </thead>
+        <tbody>
+         <% _.each(rc.staff, function(value, key) { %>
+            <% if(key !== '') { %>
+              <tr>
+                <td><%= _.findWhere(storeAllStaff, {'username': key}).name %> (<%= key %>)<%=addTaskIcon(_.findWhere(storeAllStaff, {'username': key})) %>
+                </td>
+                <td><%= value.event %></td>
+                <td><%= value.hour.toFixed(2) %></td>
+              </tr>
+            <% } %>
+          <% }) %>
+        </tbody>
+      </table>
+      <div class="well">
+        <h5>Staff who did not sign up for any event in the given time period</h5>
+          <ul style="columns: 2; -webkit-columns: 2; -moz-columns: 2;">
+            <% _.each(rc.lazy, function(person) { %>
+              <li><%= person.name %> (<%= person.username %>)<%=addTaskIcon(person) %></li> 
+            <% }) %>
+          </ul>
+      </div>
+    </script>
+</html>

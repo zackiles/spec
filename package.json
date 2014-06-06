@@ -1,0 +1,47 @@
+{
+  "name": "Spec",
+  "version": "0.1.4",
+  "contributors": [
+    {
+      "name": "Cumhur Korkut",
+      "email": "cumhurkorkut@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wesleyan/spec.git"
+  },
+  "private": true,
+  "scripts": {
+    "start": "node specapp.js"
+  },
+  "dependencies": {
+    "express": "4.0.0",
+    "method-override": "*",
+    "body-parser": "*",
+    "cookie-parser": "*",
+    "express-session": "*",
+    "ejs": "*",
+    "underscore": "*",
+    "mongojs": "*",
+    "ofe": "*",
+    "nodemailer": "*",
+    "async": "*",
+    "request": "*",
+    "googleapis": "*",
+    "xml2json": "*",
+    "memory-cache": "*",
+    "moment-range": "*",
+    "q": "*",
+    "promised-mongo": "*"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.3",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.3.2",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-cssmin": "~0.7.0"
+  }
+}
